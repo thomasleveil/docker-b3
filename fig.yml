@@ -1,0 +1,44 @@
+## fig.yml file putting together:
+## - a MySQL database
+## - a game server
+## - BigBrotherBot
+##
+## All containers are running with the --net=host docker option
+## which means they all share the docker host network stack. In
+## other words, they were all running on the same IP and thus
+## can communicate between them through 127.0.0.1. Also there is
+## no need to publish ports as no NAT networking is involved.
+
+db:
+  ## you can connect to the mysql database on the docker host ip
+  ## port 3306 with login 'admin' and password 'admin'. B3 database
+  ## is named 'b3'
+  build: db
+  net: "host"
+  volumes_from:
+  - dbdata
+  environment:
+  - "MYSQL_PASS=admin"
+
+dbdata:
+  ## data container for mysql
+  image: tutum/mysql:5.6
+  command: true
+
+urt:
+  ## game server for Urban Terror 4.2 (~2GB be patient the first time)
+  image: tomdesinto/urbanterror:4.2.019
+  net: "host"
+  volumes:
+  - "urt-data:/q3ut4"
+  
+b3:
+  ## BigBrotherBot
+  image: combro2k/b3
+  net: "host"
+  entrypoint: ['/bin/bash', '-c']
+  command: ['pip freeze; sleep 15; /opt/start.sh --config /data/conf/b3.xml']
+  volumes:
+  - "b3-data:/data"
+  - "urt-data:/urt-data"
+  

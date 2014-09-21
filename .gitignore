@@ -1,0 +1,13 @@
+/b3-data/conf/*
+!/b3-data/conf/b3.xml
+!/b3-data/conf/plugin_admin.ini
+
+/b3-data/extplugins/*
+!/b3-data/extplugins/xlrstats.py
+!/b3-data/extplugins/conf/
+/b3-data/extplugins/conf/*
+!/b3-data/extplugins/conf/plugin_xlrstats.ini
+
+
+/urt-data/*
+!/urt-data/server.cfg
